@@ -1,24 +1,38 @@
 <?php
 namespace Album\Mapper;
 
+use Album\Entity\AlbumInterface;
+use Zend\Stdlib\Hydrator\HydratorInterface;
+
 interface AlbumMapperInterface
 {
     /**
+     * @return HydratorInterface
+     */
+    public function getHydrator();
+
+    /**
+     * @return AlbumInterface
+     */
+    public function getAlbumPrototype();
+
+    /**
      * @param int|string $id
-     * @return \Album\Entity\AlbumInterface
+     * @return AlbumInterface
      */
     public function find($id);
 
     /**
-     * @return array|\Album\Entity\AlbumInterface[]
+     * @return array|AlbumInterface[]
      */
     public function findAll();
 
     /**
-     * @param array|\Album\Entity\AlbumInterface $albumArrayOrObject
+     * @param AlbumInterface $albumObject
      *
-     * @return \Album\Entity\AlbumInterface
+     * @param AlbumInterface $albumObject
+     * @return mixed
      * @throws \Exception
      */
-    public function save($albumArrayOrObject);
+    public function save(AlbumInterface $albumObject);
 } 

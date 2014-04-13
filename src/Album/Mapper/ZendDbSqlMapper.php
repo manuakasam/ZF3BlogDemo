@@ -5,6 +5,7 @@ use Album\Entity\AlbumInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
@@ -78,34 +79,36 @@ class ZendDbSqlMapper implements AlbumMapperInterface
     }
 
     /**
-     * @param array|\Album\Entity\AlbumInterface $albumArrayOrObject
+     * @param AlbumInterface $albumObject
      *
-     * @return \Album\Entity\AlbumInterface
+     * @return mixed
      * @throws \Exception
      */
-    public function save($albumArrayOrObject)
+    public function save(AlbumInterface $albumObject)
     {
-        $albumData = $albumArrayOrObject;
+        $sql    = new Sql($this->dbAdapter);
+        $insert = new Insert('album');
+        $insert->values($this->hydrator->extract($albumObject));
 
-        if (is_array($albumArrayOrObject)) {
-            $albumData = $this->hydrator->hydrate($albumArrayOrObject, $this->albumPrototype);
-        }
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $result = $stmt->execute();
 
-        if (is_null($albumData->getId())) {
-            $form = $this->getInsertForm();
-        } else {
-            $form = $this->getUpdateForm();
-        }
-
-        $form->bind($albumData);
-        if (!$form->isValid()) {
-            throw new \Exception("Form data is invalid.");
-        }
-
-        // Insert into DB
-        // Populate ID Field
-        // Return Entity
+        \Zend\Debug\Debug::dump($result);
     }
 
+    /**
+     * @return \Album\Entity\AlbumInterface
+     */
+    public function getAlbumPrototype()
+    {
+        return $this->albumPrototype;
+    }
 
+    /**
+     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     */
+    public function getHydrator()
+    {
+        return $this->hydrator;
+    }
 }
