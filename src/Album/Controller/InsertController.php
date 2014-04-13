@@ -38,9 +38,9 @@ class InsertController extends AbstractActionController
             ];
         }
 
-        $album = $this->albumService->save($this->albumForm->getObject());
-
-        if (false === ($album instanceof AlbumInterface)) {
+        try {
+            $album = $this->albumService->save($this->albumForm->getObject());
+        } catch (\Exception $e) {
             return [
                 'form' => $this->albumForm
             ];
