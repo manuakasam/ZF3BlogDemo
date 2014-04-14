@@ -24,30 +24,24 @@ class InsertController extends AbstractActionController
     {
         $request = $this->getRequest();
 
-        if (!$request->isPost()) {
-            return [
-                'form' => $this->albumForm
-            ];
+        if ($request->isPost()) {
+            $this->albumForm->setData($request->getPost());
+
+            if ($this->albumForm->isValid()) {
+                try {
+                    $newAlbum = $this->albumService->save($this->albumForm->getObject());
+                } catch (\Exception $e) {
+                    //@todo Some error happened, log it
+                }
+
+                return $this->redirect()->toRoute('album/details', [
+                    'id' => $newAlbum->getId()
+                ]);
+            }
         }
 
-        $this->albumForm->setData($request->getPost());
-
-        if (!$this->albumForm->isValid()) {
-            return [
-                'form' => $this->albumForm
-            ];
-        }
-
-        try {
-            $album = $this->albumService->save($this->albumForm->getObject());
-        } catch (\Exception $e) {
-            return [
-                'form' => $this->albumForm
-            ];
-        }
-
-        return $this->redirect()->toRoute('album/details', [
-            'id' => $album->getId()
-        ]);
+        return [
+            'form' => $this->albumForm
+        ];
     }
 } 

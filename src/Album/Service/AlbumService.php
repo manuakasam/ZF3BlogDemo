@@ -37,35 +37,20 @@ class AlbumService implements AlbumServiceInterface
     }
 
     /**
-     * @param array|AlbumInterface $albumObjectOrArray
+     * @param AlbumInterface $albumObject
      *
      * @return AlbumInterface
      * @throws \Exception
      */
-    public function save($albumObjectOrArray)
+    public function save(AlbumInterface $albumObject)
     {
-        if (is_array($albumObjectOrArray)) {
-            $albumData = $this->albumMapper->getHydrator()->hydrate(
-                $albumObjectOrArray,
-                $this->albumMapper->getAlbumPrototype()
-            );
-        } else {
-            $albumData = $albumObjectOrArray;
-        }
+        // possibly add event triggers here to trigger more business logic BEFORE an album is saved
 
-        if (null === $albumData->getId()) {
-            $form = $this->getInsertForm();
-        } else {
-            $form = $this->getUpdateForm();
-        }
+        $result = $this->albumMapper->save($albumObject);
 
-        $form->bind($albumData);
+        // possibly add event triggers here to trigger more business logic AFTER an album has been saved
 
-        if (!$form->isValid()) {
-            throw new \Exception('Data is invalid');
-        }
-
-        return $this->albumMapper->save($albumData);
+        return $result;
     }
 
 

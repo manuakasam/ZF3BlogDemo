@@ -4,6 +4,11 @@ namespace Album\Entity;
 interface AlbumInterface
 {
     /**
+     * @param $id
+     */
+    public function setId($id);
+
+    /**
      * @return mixed
      */
     public function getId();

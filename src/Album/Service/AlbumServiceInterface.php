@@ -1,25 +1,8 @@
 <?php
 namespace Album\Service;
 
-use Album\Entity\AlbumInterface;
+use Album\Mapper\AlbumMapperInterface;
 
-interface AlbumServiceInterface
+interface AlbumServiceInterface extends AlbumMapperInterface
 {
-    /**
-     * @param int|string $id
-     * @return \Album\Entity\AlbumInterface
-     */
-    public function find($id);
-
-    /**
-     * @return array|\Album\Entity\AlbumInterface[]
-     */
-    public function findAll();
-
-    /**
-     * @param array|AlbumInterface $albumObjectOrArray
-     * @return AlbumInterface
-     * @throws \Exception
-     */
-    public function save($albumObjectOrArray);
 } 

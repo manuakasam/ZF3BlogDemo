@@ -93,22 +93,8 @@ class ZendDbSqlMapper implements AlbumMapperInterface
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $result = $stmt->execute();
 
-        \Zend\Debug\Debug::dump($result);
-    }
+        $albumObject->setId($result->getGeneratedValue());
 
-    /**
-     * @return \Album\Entity\AlbumInterface
-     */
-    public function getAlbumPrototype()
-    {
-        return $this->albumPrototype;
-    }
-
-    /**
-     * @return \Zend\Stdlib\Hydrator\HydratorInterface
-     */
-    public function getHydrator()
-    {
-        return $this->hydrator;
+        return $albumObject;
     }
 }

@@ -7,16 +7,6 @@ use Zend\Stdlib\Hydrator\HydratorInterface;
 interface AlbumMapperInterface
 {
     /**
-     * @return HydratorInterface
-     */
-    public function getHydrator();
-
-    /**
-     * @return AlbumInterface
-     */
-    public function getAlbumPrototype();
-
-    /**
      * @param int|string $id
      * @return AlbumInterface
      */
@@ -31,7 +21,7 @@ interface AlbumMapperInterface
      * @param AlbumInterface $albumObject
      *
      * @param AlbumInterface $albumObject
-     * @return mixed
+     * @return AlbumInterface
      * @throws \Exception
      */
     public function save(AlbumInterface $albumObject);
