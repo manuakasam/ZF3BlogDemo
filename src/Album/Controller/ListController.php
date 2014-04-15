@@ -22,7 +22,14 @@ class ListController extends AbstractActionController
     public function listAllAction()
     {
         return [
-            'data' => $this->albumService->findAll()
+            'albumCollection' => $this->albumService->findAll()
+        ];
+    }
+
+    public function listSingleAction()
+    {
+        return [
+            'album' => $this->albumService->find($this->params('id'))
         ];
     }
 } 

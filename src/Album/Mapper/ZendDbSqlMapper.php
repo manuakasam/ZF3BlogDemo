@@ -7,6 +7,7 @@ use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Update;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class ZendDbSqlMapper implements AlbumMapperInterface
@@ -86,14 +87,40 @@ class ZendDbSqlMapper implements AlbumMapperInterface
      */
     public function save(AlbumInterface $albumObject)
     {
-        $sql    = new Sql($this->dbAdapter);
-        $insert = new Insert('album');
-        $insert->values($this->hydrator->extract($albumObject));
+        if ($albumObject->getId()) {
+            return $this->update($albumObject);
+        }
 
-        $stmt = $sql->prepareStatementForSqlObject($insert);
+        return $this->insert($albumObject);
+    }
+
+    protected function insert(AlbumInterface $albumObject)
+    {
+        $action = new Insert('album');
+        $action->values($this->hydrator->extract($albumObject));
+
+        $sql    = new Sql($this->dbAdapter);
+        $stmt   = $sql->prepareStatementForSqlObject($action);
         $result = $stmt->execute();
 
         $albumObject->setId($result->getGeneratedValue());
+
+        return $albumObject;
+    }
+
+    protected function update(AlbumInterface $albumObject)
+    {
+        $albumData = $this->hydrator->extract($albumObject);
+        unset($albumData['id']);
+
+        $action = new Update('album');
+        $action->set($albumData);
+        $action->where('id', $albumObject->getId());
+
+        $sql    = new Sql($this->dbAdapter);
+        $stmt   = $sql->prepareStatementForSqlObject($action);
+
+        $stmt->execute();
 
         return $albumObject;
     }
