@@ -104,7 +104,7 @@ class ZendDbSqlMapper implements AlbumMapperInterface
     public function remove(AlbumInterface $albumObject)
     {
         $action = new Delete('album');
-        $action->where->equalTo('id', $albumObject->getId());
+        $action->where(['id = ?' => $albumObject->getId()]);
 
         $sql    = new Sql($this->dbAdapter);
         $stmt   = $sql->prepareStatementForSqlObject($action);
@@ -145,7 +145,7 @@ class ZendDbSqlMapper implements AlbumMapperInterface
 
         $action = new Update('album');
         $action->set($albumData);
-        $action->where->equalTo('id', $albumObject->getId());
+        $action->where(['id = ?' => $albumObject->getId()]);
 
         $sql  = new Sql($this->dbAdapter);
         $stmt = $sql->prepareStatementForSqlObject($action);
