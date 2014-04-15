@@ -5,6 +5,7 @@ use Album\Entity\AlbumInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
@@ -94,6 +95,30 @@ class ZendDbSqlMapper implements AlbumMapperInterface
         return $this->insert($albumObject);
     }
 
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function remove(AlbumInterface $albumObject)
+    {
+        $action = new Delete('album');
+        $action->where->equalTo('id', $albumObject->getId());
+
+        $sql    = new Sql($this->dbAdapter);
+        $stmt   = $sql->prepareStatementForSqlObject($action);
+        $result = $stmt->execute();
+
+        return (bool)$result->getAffectedRows();
+    }
+
+
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return AlbumInterface
+     */
     protected function insert(AlbumInterface $albumObject)
     {
         $action = new Insert('album');
@@ -108,6 +133,11 @@ class ZendDbSqlMapper implements AlbumMapperInterface
         return $albumObject;
     }
 
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return AlbumInterface
+     */
     protected function update(AlbumInterface $albumObject)
     {
         $albumData = $this->hydrator->extract($albumObject);
@@ -115,10 +145,10 @@ class ZendDbSqlMapper implements AlbumMapperInterface
 
         $action = new Update('album');
         $action->set($albumData);
-        $action->where('id', $albumObject->getId());
+        $action->where->equalTo('id', $albumObject->getId());
 
-        $sql    = new Sql($this->dbAdapter);
-        $stmt   = $sql->prepareStatementForSqlObject($action);
+        $sql  = new Sql($this->dbAdapter);
+        $stmt = $sql->prepareStatementForSqlObject($action);
 
         $stmt->execute();
 

@@ -1,0 +1,13 @@
+<h1>Remove Album</h1>
+<p>
+    Please confirm the deletion of the Album <?=$this->album->getTitle();?> by <?=$this->album->getArtist();?>!
+</p>
+<?php
+$form = $this->form;
+$form->setAttribute('method', 'post');
+$form->setAttribute('action', $this->url('album/delete', array(), true));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formCollection($form);
+echo $this->form()->closeTag();

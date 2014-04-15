@@ -53,5 +53,16 @@ class AlbumService implements AlbumServiceInterface
         return $result;
     }
 
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function remove(AlbumInterface $albumObject)
+    {
+        return $this->albumMapper->remove($albumObject);
+    }
+
 
 }

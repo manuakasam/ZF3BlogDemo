@@ -25,4 +25,12 @@ interface AlbumMapperInterface
      * @throws \Exception
      */
     public function save(AlbumInterface $albumObject);
+
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function remove(AlbumInterface $albumObject);
 } 
