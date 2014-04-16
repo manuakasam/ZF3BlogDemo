@@ -2,7 +2,6 @@
 namespace Album\Mapper;
 
 use Album\Entity\AlbumInterface;
-use Zend\Stdlib\Hydrator\HydratorInterface;
 
 interface AlbumMapperInterface
 {
