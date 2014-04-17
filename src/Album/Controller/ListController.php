@@ -1,8 +1,10 @@
 <?php
+// Filename: /module/Album/src/Album/Controller/ListController.php
 namespace Album\Controller;
 
 use Album\Service\AlbumServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class ListController extends AbstractActionController
 {
@@ -11,25 +13,15 @@ class ListController extends AbstractActionController
      */
     protected $albumService;
 
-    /**
-     * @param AlbumServiceInterface $albumService
-     */
     public function __construct(AlbumServiceInterface $albumService)
     {
         $this->albumService = $albumService;
     }
 
-    public function listAllAction()
+    public function indexAction()
     {
-        return [
-            'albumCollection' => $this->albumService->findAll()
-        ];
+        return new ViewModel(array(
+            'albums' => $this->albumService->findAllAlbums()
+        ));
     }
-
-    public function listSingleAction()
-    {
-        return [
-            'album' => $this->albumService->find($this->params('id'))
-        ];
-    }
-} 
+}

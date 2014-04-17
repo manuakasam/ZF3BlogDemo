@@ -1,7 +1,8 @@
 <?php
+// Filename: /module/Album/src/Album/Mapper/AlbumMapperInterface.php
 namespace Album\Mapper;
 
-use Album\Entity\AlbumInterface;
+use Album\Model\AlbumInterface;
 
 interface AlbumMapperInterface
 {
@@ -23,7 +24,7 @@ interface AlbumMapperInterface
      * @return AlbumInterface
      * @throws \Exception
      */
-    public function save(AlbumInterface $albumObject);
+//    public function save(AlbumInterface $albumObject);
 
     /**
      * @param AlbumInterface $albumObject
@@ -31,5 +32,5 @@ interface AlbumMapperInterface
      * @return bool
      * @throws \Exception
      */
-    public function remove(AlbumInterface $albumObject);
-} 
+//    public function remove(AlbumInterface $albumObject);
+}

@@ -1,7 +1,7 @@
 <?php
+// Filename: /module/Album/src/Album/Service/AlbumService.php
 namespace Album\Service;
 
-use Album\Entity\AlbumInterface;
 use Album\Mapper\AlbumMapperInterface;
 
 class AlbumService implements AlbumServiceInterface
@@ -20,49 +20,18 @@ class AlbumService implements AlbumServiceInterface
     }
 
     /**
-     * @param int|string $id
-     * @return \Album\Entity\AlbumInterface
+     * @inheritDoc
      */
-    public function find($id)
-    {
-        return $this->albumMapper->find($id);
-    }
-
-    /**
-     * @return array|\Album\Entity\AlbumInterface[]
-     */
-    public function findAll()
+    public function findAllAlbums()
     {
         return $this->albumMapper->findAll();
     }
 
     /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return AlbumInterface
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function save(AlbumInterface $albumObject)
+    public function findAlbum($id)
     {
-        // possibly add event triggers here to trigger more business logic BEFORE an album is saved
-
-        $result = $this->albumMapper->save($albumObject);
-
-        // possibly add event triggers here to trigger more business logic AFTER an album has been saved
-
-        return $result;
+        return $this->albumMapper->find($id);
     }
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function remove(AlbumInterface $albumObject)
-    {
-        return $this->albumMapper->remove($albumObject);
-    }
-
-
 }

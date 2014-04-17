@@ -1,7 +1,8 @@
 <?php
-namespace Album\Controller;
+// Filename: /module/Album/src/Album/Factory/ListControllerFactory.php
+namespace Album\Factory;
 
-use Album\Service\AlbumServiceInterface;
+use Album\Controller\ListController;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -11,14 +12,14 @@ class ListControllerFactory implements FactoryInterface
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $realServiceLocator = $serviceLocator->getServiceLocator();
+        $albumService       = $realServiceLocator->get('Album\Service\AlbumServiceInterface');
 
-        return new ListController(
-            $realServiceLocator ->get(AlbumServiceInterface::class)
-        );
+        return new ListController($albumService);
     }
-} 
+}

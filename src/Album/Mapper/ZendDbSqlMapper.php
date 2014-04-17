@@ -1,14 +1,12 @@
 <?php
+// Filename: /module/Album/src/Album/Mapper/ZendDbSqlMapper.php
 namespace Album\Mapper;
 
-use Album\Entity\AlbumInterface;
+use Album\Model\AlbumInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Db\Sql\Delete;
-use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Update;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class ZendDbSqlMapper implements AlbumMapperInterface
@@ -40,15 +38,14 @@ class ZendDbSqlMapper implements AlbumMapperInterface
     /**
      * @param int|string $id
      *
-     * @return \Album\Entity\AlbumInterface
+     * @return AlbumInterface
      * @throws \Exception
      */
     public function find($id)
     {
         $sql    = new Sql($this->dbAdapter);
         $select = $sql->select('album');
-
-        $select->where->equalTo('id', $id);
+        $select->where(array('id = ?' => $id));
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -61,7 +58,7 @@ class ZendDbSqlMapper implements AlbumMapperInterface
     }
 
     /**
-     * @return array|\Album\Entity\AlbumInterface[]
+     * @return array|AlbumInterface[]
      */
     public function findAll()
     {
@@ -77,81 +74,6 @@ class ZendDbSqlMapper implements AlbumMapperInterface
             return $resultSet->initialize($result);
         }
 
-        return [];
-    }
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public function save(AlbumInterface $albumObject)
-    {
-        if ($albumObject->getId()) {
-            return $this->update($albumObject);
-        }
-
-        return $this->insert($albumObject);
-    }
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function remove(AlbumInterface $albumObject)
-    {
-        $action = new Delete('album');
-        $action->where(['id = ?' => $albumObject->getId()]);
-
-        $sql    = new Sql($this->dbAdapter);
-        $stmt   = $sql->prepareStatementForSqlObject($action);
-        $result = $stmt->execute();
-
-        return (bool)$result->getAffectedRows();
-    }
-
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return AlbumInterface
-     */
-    protected function insert(AlbumInterface $albumObject)
-    {
-        $action = new Insert('album');
-        $action->values($this->hydrator->extract($albumObject));
-
-        $sql    = new Sql($this->dbAdapter);
-        $stmt   = $sql->prepareStatementForSqlObject($action);
-        $result = $stmt->execute();
-
-        $albumObject->setId($result->getGeneratedValue());
-
-        return $albumObject;
-    }
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return AlbumInterface
-     */
-    protected function update(AlbumInterface $albumObject)
-    {
-        $albumData = $this->hydrator->extract($albumObject);
-        unset($albumData['id']);
-
-        $action = new Update('album');
-        $action->set($albumData);
-        $action->where(['id = ?' => $albumObject->getId()]);
-
-        $sql  = new Sql($this->dbAdapter);
-        $stmt = $sql->prepareStatementForSqlObject($action);
-
-        $stmt->execute();
-
-        return $albumObject;
+        return array();
     }
 }
