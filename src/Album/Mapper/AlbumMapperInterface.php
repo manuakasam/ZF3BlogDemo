@@ -9,6 +9,7 @@ interface AlbumMapperInterface
     /**
      * @param int|string $id
      * @return AlbumInterface
+     * @throws \InvalidArgumentException
      */
     public function find($id);
 
@@ -24,7 +25,7 @@ interface AlbumMapperInterface
      * @return AlbumInterface
      * @throws \Exception
      */
-//    public function save(AlbumInterface $albumObject);
+    public function save(AlbumInterface $albumObject);
 
     /**
      * @param AlbumInterface $albumObject

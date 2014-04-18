@@ -24,7 +24,8 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
-            'Album\Controller\List' => 'Album\Factory\ListControllerFactory'
+            'Album\Controller\List'  => 'Album\Factory\ListControllerFactory',
+            'Album\Controller\Write' => 'Album\Factory\WriteControllerFactory'
         )
     ),
     'router' => array(
@@ -36,6 +37,31 @@ return array(
                     'defaults' => array(
                         'controller' => 'Album\Controller\List',
                         'action'     => 'index',
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes'  => array(
+                    'detail' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route'    => '/:id',
+                            'defaults' => array(
+                                'action' => 'detail'
+                            ),
+                            'constraints' => array(
+                                'id' => '\d+'
+                            )
+                        )
+                    ),
+                    'add' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route'    => '/add',
+                            'defaults' => array(
+                                'controller' => 'Album\Controller\Write',
+                                'action'     => 'add'
+                            )
+                        )
                     )
                 )
             )

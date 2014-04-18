@@ -3,6 +3,7 @@
 namespace Album\Service;
 
 use Album\Mapper\AlbumMapperInterface;
+use Album\Model\AlbumInterface;
 
 class AlbumService implements AlbumServiceInterface
 {
@@ -33,5 +34,13 @@ class AlbumService implements AlbumServiceInterface
     public function findAlbum($id)
     {
         return $this->albumMapper->find($id);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function saveAlbum(AlbumInterface $album)
+    {
+        return $this->albumMapper->save($album);
     }
 }

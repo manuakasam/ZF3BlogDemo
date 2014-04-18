@@ -6,7 +6,9 @@ use Album\Model\AlbumInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Update;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class ZendDbSqlMapper implements AlbumMapperInterface
@@ -39,7 +41,7 @@ class ZendDbSqlMapper implements AlbumMapperInterface
      * @param int|string $id
      *
      * @return AlbumInterface
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function find($id)
     {
@@ -50,11 +52,11 @@ class ZendDbSqlMapper implements AlbumMapperInterface
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+        if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows()) {
             return $this->hydrator->hydrate($result->current(), $this->albumPrototype);
         }
 
-        throw new \Exception("Album with given ID:{$id} not found.");
+        throw new \InvalidArgumentException("Album with given ID:{$id} not found.");
     }
 
     /**
@@ -75,5 +77,66 @@ class ZendDbSqlMapper implements AlbumMapperInterface
         }
 
         return array();
+    }
+
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return AlbumInterface
+     */
+    public function save(AlbumInterface $albumObject)
+    {
+        if ($albumObject->getId()) {
+            return $this->update($albumObject);
+        }
+
+        return $this->insert($albumObject);
+    }
+
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return AlbumInterface
+     * @throws \Exception
+     */
+    protected function insert(AlbumInterface $albumObject)
+    {
+        \Zend\Debug\Debug::dump($this->hydrator->extract($albumObject));die("test");
+        $action = new Insert('album');
+        $action->values($this->hydrator->extract($albumObject));
+
+        $sql    = new Sql($this->dbAdapter);
+        $stmt   = $sql->prepareStatementForSqlObject($action);
+        $result = $stmt->execute();
+
+        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+            $albumObject->setId($result->getGeneratedValue());
+
+            return $albumObject;
+        }
+
+        throw new \Exception("Album couldn't be added.");
+    }
+
+    /**
+     * @param AlbumInterface $albumObject
+     *
+     * @return AlbumInterface
+     */
+    protected function update(AlbumInterface $albumObject)
+    {
+        $albumData = $this->hydrator->extract($albumObject);
+        unset($albumData['id']);
+
+        $action = new Update('album');
+        $action->set($albumData);
+        $action->where(array('id = ?' => $albumObject->getId()));
+
+        $sql  = new Sql($this->dbAdapter);
+        $stmt = $sql->prepareStatementForSqlObject($action);
+
+        $stmt->execute();
+
+        return $albumObject;
     }
 }

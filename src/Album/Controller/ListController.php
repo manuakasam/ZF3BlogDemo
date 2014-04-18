@@ -24,4 +24,19 @@ class ListController extends AbstractActionController
             'albums' => $this->albumService->findAllAlbums()
         ));
     }
+
+    public function detailAction()
+    {
+        $id = $this->params()->fromRoute('id');
+
+        try {
+            $album = $this->albumService->findAlbum($id);
+        } catch (\InvalidArgumentException $ex) {
+            return $this->redirect()->toRoute('album');
+        }
+
+        return new ViewModel(array(
+            'album' => $album
+        ));
+    }
 }
