@@ -44,4 +44,31 @@ class WriteController extends AbstractActionController
             'form' => $this->albumForm
         ));
     }
+
+    public function editAction()
+    {
+        $request = $this->getRequest();
+        $album   = $this->albumService->findAlbum($this->params('id'));
+
+        $this->albumForm->bind($album);
+
+        if ($request->isPost()) {
+            $this->albumForm->setData($request->getPost());
+
+            if ($this->albumForm->isValid()) {
+                try {
+                    $this->albumService->saveAlbum($album);
+
+                    return $this->redirect()->toRoute('album');
+                } catch (\Exception $e) {
+                    die($e->getMessage());
+                    // Some DB Error happened, log it and let the user know
+                }
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $this->albumForm
+        ));
+    }
 }

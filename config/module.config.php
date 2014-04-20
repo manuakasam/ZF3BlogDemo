@@ -24,8 +24,9 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
-            'Album\Controller\List'  => 'Album\Factory\ListControllerFactory',
-            'Album\Controller\Write' => 'Album\Factory\WriteControllerFactory'
+            'Album\Controller\List'   => 'Album\Factory\ListControllerFactory',
+            'Album\Controller\Write'  => 'Album\Factory\WriteControllerFactory',
+            'Album\Controller\Delete' => 'Album\Factory\DeleteControllerFactory'
         )
     ),
     'router' => array(
@@ -62,7 +63,33 @@ return array(
                                 'action'     => 'add'
                             )
                         )
-                    )
+                    ),
+                    'edit' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route'    => '/edit/:id',
+                            'defaults' => array(
+                                'controller' => 'Album\Controller\Write',
+                                'action'     => 'edit'
+                            ),
+                            'constraints' => array(
+                                'id' => '\d+'
+                            )
+                        )
+                    ),
+                    'delete' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route'    => '/delete/:id',
+                            'defaults' => array(
+                                'controller' => 'Album\Controller\Delete',
+                                'action'     => 'delete'
+                            ),
+                            'constraints' => array(
+                                'id' => '\d+'
+                            )
+                        )
+                    ),
                 )
             )
         )

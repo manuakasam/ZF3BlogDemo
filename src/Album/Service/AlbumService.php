@@ -43,4 +43,12 @@ class AlbumService implements AlbumServiceInterface
     {
         return $this->albumMapper->save($album);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteAlbum(AlbumInterface $album)
+    {
+        return $this->albumMapper->delete($album);
+    }
 }

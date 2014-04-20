@@ -30,4 +30,13 @@ interface AlbumServiceInterface
      * @return AlbumInterface
      */
     public function saveAlbum(AlbumInterface $album);
+
+    /**
+     * Should delete a given implementation of the AlbumInterface and return true if the deletion has been
+     * successful or false if not.
+     *
+     * @param  AlbumInterface $album
+     * @return bool
+     */
+    public function deleteAlbum(AlbumInterface $album);
 }

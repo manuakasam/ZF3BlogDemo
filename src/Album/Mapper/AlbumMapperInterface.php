@@ -33,5 +33,5 @@ interface AlbumMapperInterface
      * @return bool
      * @throws \Exception
      */
-//    public function remove(AlbumInterface $albumObject);
+    public function delete(AlbumInterface $albumObject);
 }
