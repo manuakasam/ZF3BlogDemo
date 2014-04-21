@@ -1,7 +1,8 @@
 <?php
+// Filename: /module/Album/src/Album/Mapper/ZendDbSqlMapper.php
 namespace Album\Mapper;
 
-use Album\Entity\AlbumInterface;
+use Album\Model\AlbumInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -38,30 +39,26 @@ class ZendDbSqlMapper implements AlbumMapperInterface
     }
 
     /**
-     * @param int|string $id
-     *
-     * @return \Album\Entity\AlbumInterface
-     * @throws \Exception
+     * @inheritDoc
      */
     public function find($id)
     {
         $sql    = new Sql($this->dbAdapter);
         $select = $sql->select('album');
-
-        $select->where->equalTo('id', $id);
+        $select->where(array('id = ?' => $id));
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+        if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows()) {
             return $this->hydrator->hydrate($result->current(), $this->albumPrototype);
         }
 
-        throw new \Exception("Album with given ID:{$id} not found.");
+        throw new \InvalidArgumentException("Album with given ID:{$id} not found.");
     }
 
     /**
-     * @return array|\Album\Entity\AlbumInterface[]
+     * @inheritDoc
      */
     public function findAll()
     {
@@ -77,81 +74,56 @@ class ZendDbSqlMapper implements AlbumMapperInterface
             return $resultSet->initialize($result);
         }
 
-        return [];
+        return array();
     }
 
     /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return mixed
-     * @throws \Exception
+     * @inheritDoc
      */
     public function save(AlbumInterface $albumObject)
     {
+        $albumData = $this->hydrator->extract($albumObject);
+        unset($albumData['id']); // Neither Insert nor Update needs the ID in the array
+
         if ($albumObject->getId()) {
-            return $this->update($albumObject);
+            // ID present, it's an Update
+            $action = new Update('album');
+            $action->set($albumData);
+            $action->where(array('id = ?' => $albumObject->getId()));
+        } else {
+            // ID NOT present, it's an Insert
+            $action = new Insert('album');
+            $action->values($albumData);
         }
 
-        return $this->insert($albumObject);
+        $sql    = new Sql($this->dbAdapter);
+        $stmt   = $sql->prepareStatementForSqlObject($action);
+        $result = $stmt->execute();
+
+        if ($result instanceof ResultInterface) {
+            if ($newId = $result->getGeneratedValue()) {
+                // When a value has been generated, set it on the object
+                $albumObject->setId($newId);
+            }
+
+            return $albumObject;
+        }
+
+        throw new \Exception("Database error");
     }
 
     /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return bool
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function remove(AlbumInterface $albumObject)
+    public function delete(AlbumInterface $albumObject)
     {
         $action = new Delete('album');
-        $action->where(['id = ?' => $albumObject->getId()]);
+        $action->where(array('id = ?' => $albumObject->getId()));
 
         $sql    = new Sql($this->dbAdapter);
         $stmt   = $sql->prepareStatementForSqlObject($action);
         $result = $stmt->execute();
 
         return (bool)$result->getAffectedRows();
-    }
-
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return AlbumInterface
-     */
-    protected function insert(AlbumInterface $albumObject)
-    {
-        $action = new Insert('album');
-        $action->values($this->hydrator->extract($albumObject));
-
-        $sql    = new Sql($this->dbAdapter);
-        $stmt   = $sql->prepareStatementForSqlObject($action);
-        $result = $stmt->execute();
-
-        $albumObject->setId($result->getGeneratedValue());
-
-        return $albumObject;
-    }
-
-    /**
-     * @param AlbumInterface $albumObject
-     *
-     * @return AlbumInterface
-     */
-    protected function update(AlbumInterface $albumObject)
-    {
-        $albumData = $this->hydrator->extract($albumObject);
-        unset($albumData['id']);
-
-        $action = new Update('album');
-        $action->set($albumData);
-        $action->where(['id = ?' => $albumObject->getId()]);
-
-        $sql  = new Sql($this->dbAdapter);
-        $stmt = $sql->prepareStatementForSqlObject($action);
-
-        $stmt->execute();
-
-        return $albumObject;
     }
 }

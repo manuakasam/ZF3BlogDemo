@@ -1,26 +1,23 @@
 <?php
-namespace Album\Mapper;
+// Filename: /module/Album/src/Album/Factory/AlbumServiceFactory.php
+namespace Album\Factory;
 
-use Album\Entity\Album;
+use Album\Service\AlbumService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
-class ZendDbSqlMapperFactory implements FactoryInterface
+class AlbumServiceFactory implements FactoryInterface
 {
     /**
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     *
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ZendDbSqlMapper(
-            $serviceLocator->get('Zend\Db\Adapter\Adapter'),
-            new ClassMethods(),
-            new Album()
+        return new AlbumService(
+            $serviceLocator->get('Album\Mapper\AlbumMapperInterface')
         );
     }
-} 
+}

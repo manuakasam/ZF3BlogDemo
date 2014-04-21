@@ -1,13 +1,12 @@
 <?php
+// Filename: /module/Album/src/Album/Form/AlbumFieldset.php
 namespace Album\Form;
 
-use Album\Entity\Album;
-use Zend\Form\Element;
+use Album\Model\Album;
 use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class AlbumFieldset extends Fieldset implements InputFilterProviderInterface
+class AlbumFieldset extends Fieldset
 {
     public function __construct($name = null, $options = array())
     {
@@ -15,63 +14,26 @@ class AlbumFieldset extends Fieldset implements InputFilterProviderInterface
 
         $this->setHydrator(new ClassMethods(false));
         $this->setObject(new Album());
-    }
 
-    public function init()
-    {
-        $this->add([
-            'name' => 'id',
-            'type' => 'hidden'
-        ]);
+        $this->add(array(
+            'type' => 'hidden',
+            'name' => 'id'
+        ));
 
-        $this->add([
-            'name' => 'title',
+        $this->add(array(
             'type' => 'text',
-            'options' => [
-                'label' => 'Title'
-            ]
-        ]);
-
-        $this->add([
             'name' => 'artist',
+            'options' => array(
+                'label' => 'The Artist'
+            )
+        ));
+
+        $this->add(array(
             'type' => 'text',
-            'options' => [
-                'label' => 'Artist'
-            ]
-        ]);
+            'name' => 'title',
+            'options' => array(
+                'label' => 'Album Title'
+            )
+        ));
     }
-
-    /**
-     * Should return an array specification compatible with
-     * {@link Zend\InputFilter\Factory::createInputFilter()}.
-     *
-     * @return array
-     */
-    public function getInputFilterSpecification()
-    {
-        return [
-            'id' => [
-                'filter' => [
-                    ['name' => 'int']
-                ],
-                'required' => false,
-            ],
-            'title' => [
-                'filter' => [
-                    ['name' => 'stringtrim'],
-                    ['name' => 'striptags']
-                ],
-                'required' => true,
-            ],
-            'artist' => [
-                'filter' => [
-                    ['name' => 'stringtrim'],
-                    ['name' => 'striptags']
-                ],
-                'required' => true,
-            ]
-        ];
-    }
-
-
-} 
+}

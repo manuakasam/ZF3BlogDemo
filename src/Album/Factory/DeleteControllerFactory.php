@@ -1,12 +1,12 @@
 <?php
-namespace Album\Controller;
+// Filename: /module/Album/src/Album/Factory/ListControllerFactory.php
+namespace Album\Factory;
 
-use Album\Form\RemoveForm;
-use Album\Service\AlbumServiceInterface;
+use Album\Controller\DeleteController;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RemoveControllerFactory implements FactoryInterface
+class DeleteControllerFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -18,10 +18,8 @@ class RemoveControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $realServiceLocator = $serviceLocator->getServiceLocator();
+        $albumService       = $realServiceLocator->get('Album\Service\AlbumServiceInterface');
 
-        return new RemoveController(
-            $realServiceLocator->get(AlbumServiceInterface::class),
-            $realServiceLocator->get('FormElementManager')->get(RemoveForm::class)
-        );
+        return new DeleteController($albumService);
     }
-} 
+}

@@ -1,12 +1,11 @@
 <?php
-// Filename: /module/Album/src/Album/Controller/ListController.php
 namespace Album\Controller;
 
 use Album\Service\AlbumServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class ListController extends AbstractActionController
+class DeleteController extends AbstractActionController
 {
     /**
      * @var \Album\Service\AlbumServiceInterface
@@ -18,20 +17,23 @@ class ListController extends AbstractActionController
         $this->albumService = $albumService;
     }
 
-    public function indexAction()
+    public function deleteAction()
     {
-        return new ViewModel(array(
-            'albums' => $this->albumService->findAllAlbums()
-        ));
-    }
-
-    public function detailAction()
-    {
-        $id = $this->params()->fromRoute('id');
-
         try {
-            $album = $this->albumService->findAlbum($id);
-        } catch (\InvalidArgumentException $ex) {
+            $album = $this->albumService->findAlbum($this->params('id'));
+        } catch (\InvalidArgumentException $e) {
+            return $this->redirect()->toRoute('album');
+        }
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $del = $request->getPost('delete_confirmation');
+
+            if ($del === 'yes') {
+                $this->albumService->deleteAlbum($album);
+            }
+
             return $this->redirect()->toRoute('album');
         }
 
@@ -39,4 +41,4 @@ class ListController extends AbstractActionController
             'album' => $album
         ));
     }
-}
+} 

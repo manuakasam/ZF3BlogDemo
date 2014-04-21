@@ -1,10 +1,15 @@
-<h1>Update Album</h1>
+<!-- Filename: /module/Album/view/album/write/add.phtml -->
+<h1>WriteController::editAction()</h1>
 <?php
 $form = $this->form;
-$form->setAttribute('method', 'post');
+$form->setAttribute('method', 'POST');
 $form->setAttribute('action', $this->url('album/edit', array(), true));
 $form->prepare();
 
+$form->get('submit')->setValue('Update Album');
+
 echo $this->form()->openTag($form);
+
 echo $this->formCollection($form);
+
 echo $this->form()->closeTag();

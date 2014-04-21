@@ -1,10 +1,13 @@
-<h1>Insert Album</h1>
+<!-- Filename: /module/Album/view/album/write/add.phtml -->
+<h1>WriteController::addAction()</h1>
 <?php
 $form = $this->form;
-$form->setAttribute('method', 'post');
+$form->setAttribute('method', 'POST');
 $form->setAttribute('action', $this->url());
 $form->prepare();
 
 echo $this->form()->openTag($form);
+
 echo $this->formCollection($form);
+
 echo $this->form()->closeTag();

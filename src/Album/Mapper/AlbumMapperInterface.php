@@ -1,13 +1,15 @@
 <?php
+// Filename: /module/Album/src/Album/Mapper/AlbumMapperInterface.php
 namespace Album\Mapper;
 
-use Album\Entity\AlbumInterface;
+use Album\Model\AlbumInterface;
 
 interface AlbumMapperInterface
 {
     /**
      * @param int|string $id
      * @return AlbumInterface
+     * @throws \InvalidArgumentException
      */
     public function find($id);
 
@@ -31,5 +33,5 @@ interface AlbumMapperInterface
      * @return bool
      * @throws \Exception
      */
-    public function remove(AlbumInterface $albumObject);
-} 
+    public function delete(AlbumInterface $albumObject);
+}
