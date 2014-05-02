@@ -1,0 +1,21 @@
+<!-- Filename: /module/Blog/view/blog/list/index.phtml -->
+<h1>Blogs</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+        <th>Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->blogs as $a) : ?>
+        <tr>
+            <td><?php echo $a->getId();?></td>
+            <td><?php echo $a->getText();?></td>
+            <td><?php echo $a->getTitle();?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

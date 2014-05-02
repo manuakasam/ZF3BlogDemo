@@ -1,0 +1,9 @@
+<!-- FileName: /module/Blog/view/blog/list/detail.phtml -->
+<h1>Blog Details</h1>
+
+<dl>
+    <dt>Blog Title</dt>
+    <dd><?php echo $this->escapeHtml($this->blog->getTitle());?></dd>
+    <dt>Blog Text</dt>
+    <dd><?php echo $this->escapeHtml($this->blog->getText());?></dd>
+</dl>

@@ -1,0 +1,11 @@
+<!-- Filename: /module/Blog/view/blog/delete/delete.phtml -->
+<h1>DeleteController::deleteAction()</h1>
+<p>
+    Are you sure that you want to delete
+    '<?php echo $this->escapeHtml($this->blog->getTitle()); ?>' by
+    '<?php echo $this->escapeHtml($this->blog->getText()); ?>'?
+</p>
+<form action="<?php echo $this->url('blog/delete', array(), true) ?>" method="post">
+    <input type="submit" name="delete_confirmation" value="yes" />
+    <input type="submit" name="delete_confirmation" value="no" />
+</form>
