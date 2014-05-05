@@ -2,7 +2,7 @@
 // Filename: /module/Blog/src/Blog/Controller/WriteController.php
 namespace Blog\Controller;
 
-use Blog\Service\BlogServiceInterface;
+use Blog\Service\PostServiceInterface;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -14,7 +14,7 @@ class WriteController extends AbstractActionController
     protected $blogForm;
 
     public function __construct(
-        BlogServiceInterface $blogService,
+        PostServiceInterface $blogService,
         FormInterface $blogForm
     ) {
         $this->blogService = $blogService;
@@ -30,7 +30,7 @@ class WriteController extends AbstractActionController
 
             if ($this->blogForm->isValid()) {
                 try {
-                    $this->blogService->saveBlog($this->blogForm->getData());
+                    $this->blogService->savePost($this->blogForm->getData());
 
                     return $this->redirect()->toRoute('blog');
                 } catch (\Exception $e) {
@@ -48,7 +48,7 @@ class WriteController extends AbstractActionController
     public function editAction()
     {
         $request = $this->getRequest();
-        $blog   = $this->blogService->findBlog($this->params('id'));
+        $blog   = $this->blogService->findPost($this->params('id'));
 
         $this->blogForm->bind($blog);
 
@@ -57,7 +57,7 @@ class WriteController extends AbstractActionController
 
             if ($this->blogForm->isValid()) {
                 try {
-                    $this->blogService->saveBlog($blog);
+                    $this->blogService->savePost($blog);
 
                     return $this->redirect()->toRoute('blog');
                 } catch (\Exception $e) {

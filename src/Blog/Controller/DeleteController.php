@@ -1,18 +1,19 @@
 <?php
+// Filename: /module/Blog/src/Blog/Controller/DeleteController.php
 namespace Blog\Controller;
 
-use Blog\Service\BlogServiceInterface;
+use Blog\Service\PostServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class DeleteController extends AbstractActionController
 {
     /**
-     * @var \Blog\Service\BlogServiceInterface
+     * @var \Blog\Service\PostServiceInterface
      */
     protected $blogService;
 
-    public function __construct(BlogServiceInterface $blogService)
+    public function __construct(PostServiceInterface $blogService)
     {
         $this->blogService = $blogService;
     }
@@ -20,7 +21,7 @@ class DeleteController extends AbstractActionController
     public function deleteAction()
     {
         try {
-            $blog = $this->blogService->findBlog($this->params('id'));
+            $blog = $this->blogService->findPost($this->params('id'));
         } catch (\InvalidArgumentException $e) {
             return $this->redirect()->toRoute('blog');
         }
@@ -31,7 +32,7 @@ class DeleteController extends AbstractActionController
             $del = $request->getPost('delete_confirmation');
 
             if ($del === 'yes') {
-                $this->blogService->deleteBlog($blog);
+                $this->blogService->deletePost($blog);
             }
 
             return $this->redirect()->toRoute('blog');

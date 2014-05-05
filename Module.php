@@ -19,7 +19,7 @@ class Module implements
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    // Autoload all classes from namespace 'Blog' from '/module/Blog/src/Blog'
+                    // Autoload all classes from namespace 'Post' from '/module/Post/src/Post'
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 )
             )

@@ -2,7 +2,7 @@
 // Filename: /module/Blog/src/Blog/Mapper/ZendDbSqlMapper.php
 namespace Blog\Mapper;
 
-use Blog\Model\BlogInterface;
+use Blog\Model\PostInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -12,26 +12,32 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class ZendDbSqlMapper implements BlogMapperInterface
+class ZendDbSqlMapper implements PostMapperInterface
 {
     /**
      * @var \Zend\Db\Adapter\AdapterInterface
      */
     protected $dbAdapter;
 
+    /**
+     * @var \Zend\Stdlib\Hydrator\HydratorInterface
+     */
     protected $hydrator;
 
+    /**
+     * @var \Blog\Model\PostInterface
+     */
     protected $blogPrototype;
 
     /**
      * @param AdapterInterface  $dbAdapter
      * @param HydratorInterface $hydrator
-     * @param BlogInterface    $blogPrototype
+     * @param PostInterface    $blogPrototype
      */
     public function __construct(
         AdapterInterface $dbAdapter,
         HydratorInterface $hydrator,
-        BlogInterface $blogPrototype
+        PostInterface $blogPrototype
     ) {
         $this->dbAdapter      = $dbAdapter;
         $this->hydrator       = $hydrator;
@@ -54,7 +60,7 @@ class ZendDbSqlMapper implements BlogMapperInterface
             return $this->hydrator->hydrate($result->current(), $this->blogPrototype);
         }
 
-        throw new \InvalidArgumentException("Blog with given ID:{$id} not found.");
+        throw new \InvalidArgumentException("Post with given ID:{$id} not found.");
     }
 
     /**
@@ -80,7 +86,7 @@ class ZendDbSqlMapper implements BlogMapperInterface
     /**
      * @inheritDoc
      */
-    public function save(BlogInterface $blogObject)
+    public function save(PostInterface $blogObject)
     {
         $blogData = $this->hydrator->extract($blogObject);
         unset($blogData['id']); // Neither Insert nor Update needs the ID in the array
@@ -115,7 +121,7 @@ class ZendDbSqlMapper implements BlogMapperInterface
     /**
      * @inheritDoc
      */
-    public function delete(BlogInterface $blogObject)
+    public function delete(PostInterface $blogObject)
     {
         $action = new Delete('blog');
         $action->where(array('id = ?' => $blogObject->getId()));

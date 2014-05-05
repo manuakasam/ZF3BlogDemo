@@ -11,8 +11,8 @@ class WriteControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $realServiceLocator = $serviceLocator->getServiceLocator();
-        $blogService       = $realServiceLocator->get('Blog\Service\BlogServiceInterface');
-        $blogInsertForm    = $realServiceLocator->get('FormElementManager')->get('Blog\Form\BlogForm');
+        $blogService       = $realServiceLocator->get('Blog\Service\PostServiceInterface');
+        $blogInsertForm    = $realServiceLocator->get('FormElementManager')->get('Blog\Form\PostForm');
 
         return new WriteController(
             $blogService,

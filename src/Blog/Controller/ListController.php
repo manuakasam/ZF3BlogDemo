@@ -2,26 +2,26 @@
 // Filename: /module/Blog/src/Blog/Controller/ListController.php
 namespace Blog\Controller;
 
-use Blog\Service\BlogServiceInterface;
+use Blog\Service\PostServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class ListController extends AbstractActionController
 {
     /**
-     * @var \Blog\Service\BlogServiceInterface
+     * @var \Blog\Service\PostServiceInterface
      */
-    protected $blogService;
+    protected $postService;
 
-    public function __construct(BlogServiceInterface $blogService)
+    public function __construct(PostServiceInterface $postService)
     {
-        $this->blogService = $blogService;
+        $this->postService = $postService;
     }
 
     public function indexAction()
     {
         return new ViewModel(array(
-            'blogs' => $this->blogService->findAllBlogs()
+            'posts' => $this->postService->findAllPosts()
         ));
     }
 
@@ -30,13 +30,13 @@ class ListController extends AbstractActionController
         $id = $this->params()->fromRoute('id');
 
         try {
-            $blog = $this->blogService->findBlog($id);
+            $post = $this->postService->findPost($id);
         } catch (\InvalidArgumentException $ex) {
             return $this->redirect()->toRoute('blog');
         }
 
         return new ViewModel(array(
-            'blog' => $blog
+            'post' => $post
         ));
     }
 }

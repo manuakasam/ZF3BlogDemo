@@ -1,8 +1,8 @@
 <?php
-// Filename: /module/Blog/src/Blog/Model/Blog.php
+// Filename: /module/Blog/src/Blog/Model/Post.php
 namespace Blog\Model;
 
-class Blog implements BlogInterface
+class Post implements PostInterface
 {
     /**
      * @var int

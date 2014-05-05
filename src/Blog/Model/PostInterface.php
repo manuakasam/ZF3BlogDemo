@@ -1,25 +1,25 @@
 <?php
-// Filename: /module/Blog/src/Blog/Model/BlogInterface.php
+// Filename: /module/Blog/src/Blog/Model/PostInterface.php
 namespace Blog\Model;
 
-interface BlogInterface
+interface PostInterface
 {
     /**
-     * Will return the ID of the Blog
+     * Will return the ID of the blog post
      *
      * @return int
      */
     public function getId();
 
     /**
-     * Will return the TITLE of the Blog
+     * Will return the TITLE of the blog post
      *
      * @return string
      */
     public function getTitle();
 
     /**
-     * Will return the ARTIST of the Blog
+     * Will return the TEXT of the blog post
      *
      * @return string
      */

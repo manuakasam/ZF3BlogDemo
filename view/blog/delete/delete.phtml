@@ -2,7 +2,7 @@
 <h1>DeleteController::deleteAction()</h1>
 <p>
     Are you sure that you want to delete
-    '<?php echo $this->escapeHtml($this->blog->getTitle()); ?>' by
+    '<?php echo $this->escapeHtml($this->blog->getTitle()); ?>' with text
     '<?php echo $this->escapeHtml($this->blog->getText()); ?>'?
 </p>
 <form action="<?php echo $this->url('blog/delete', array(), true) ?>" method="post">

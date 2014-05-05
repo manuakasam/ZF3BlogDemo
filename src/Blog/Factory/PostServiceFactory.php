@@ -1,12 +1,12 @@
 <?php
-// Filename: /module/Blog/src/Blog/Factory/BlogServiceFactory.php
+// Filename: /module/Blog/src/Blog/Factory/PostServiceFactory.php
 namespace Blog\Factory;
 
-use Blog\Service\BlogService;
+use Blog\Service\PostService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class BlogServiceFactory implements FactoryInterface
+class PostServiceFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -16,8 +16,8 @@ class BlogServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new BlogService(
-            $serviceLocator->get('Blog\Mapper\BlogMapperInterface')
+        return new PostService(
+            $serviceLocator->get('Blog\Mapper\PostMapperInterface')
         );
     }
 }

@@ -1,4 +1,4 @@
-<!-- Filename: /module/Blog/view/blog/write/add.phtml -->
+<!-- Filename: /module/Blog/view/blog/write/edit.phtml -->
 <h1>WriteController::editAction()</h1>
 <?php
 $form = $this->form;
@@ -6,7 +6,7 @@ $form->setAttribute('method', 'POST');
 $form->setAttribute('action', $this->url('blog/edit', array(), true));
 $form->prepare();
 
-$form->get('submit')->setValue('Update Blog');
+$form->get('submit')->setValue('Update Post');
 
 echo $this->form()->openTag($form);
 

@@ -1,18 +1,18 @@
 <?php
-// Filename: /module/Blog/src/Blog/Form/InsertBlogForm.php
+// Filename: /module/Blog/src/Blog/Form/PostForm.php
 namespace Blog\Form;
 
 use Zend\Form\Form;
 
-class BlogForm extends Form
+class PostForm extends Form
 {
     public function __construct($name = null, $options = array())
     {
         parent::__construct($name, $options);
 
         $this->add(array(
-            'name' => 'blog-fieldset',
-            'type' => 'Blog\Form\BlogFieldset',
+            'name' => 'post-fieldset',
+            'type' => 'Blog\Form\PostFieldset',
             'options' => array(
                 'use_as_base_fieldset' => true
             )
@@ -22,7 +22,7 @@ class BlogForm extends Form
             'type' => 'submit',
             'name' => 'submit',
             'attributes' => array(
-                'value' => 'Insert new Blog'
+                'value' => 'Insert new Post'
             )
         ));
     }

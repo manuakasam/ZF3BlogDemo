@@ -3,7 +3,7 @@
 namespace Blog\Factory;
 
 use Blog\Mapper\ZendDbSqlMapper;
-use Blog\Model\Blog;
+use Blog\Model\Post;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
@@ -22,7 +22,7 @@ class ZendDbSqlMapperFactory implements FactoryInterface
         return new ZendDbSqlMapper(
             $serviceLocator->get('Zend\Db\Adapter\Adapter'),
             new ClassMethods(false),
-            new Blog()
+            new Post()
         );
     }
 }

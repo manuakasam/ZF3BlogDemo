@@ -1,5 +1,5 @@
 <?php
-// Filename: /module/Blog/src/Blog/Factory/ListControllerFactory.php
+// Filename: /module/Blog/src/Blog/Factory/DeleteControllerFactory.php
 namespace Blog\Factory;
 
 use Blog\Controller\DeleteController;
@@ -18,7 +18,7 @@ class DeleteControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $realServiceLocator = $serviceLocator->getServiceLocator();
-        $blogService       = $realServiceLocator->get('Blog\Service\BlogServiceInterface');
+        $blogService       = $realServiceLocator->get('Blog\Service\PostServiceInterface');
 
         return new DeleteController($blogService);
     }

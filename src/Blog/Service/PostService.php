@@ -1,21 +1,21 @@
 <?php
-// Filename: /module/Blog/src/Blog/Service/BlogService.php
+// Filename: /module/Blog/src/Blog/Service/PostService.php
 namespace Blog\Service;
 
-use Blog\Mapper\BlogMapperInterface;
-use Blog\Model\BlogInterface;
+use Blog\Mapper\PostMapperInterface;
+use Blog\Model\PostInterface;
 
-class BlogService implements BlogServiceInterface
+class PostService implements PostServiceInterface
 {
     /**
-     * @var \Blog\Mapper\BlogMapperInterface
+     * @var \Blog\Mapper\PostMapperInterface
      */
     protected $blogMapper;
 
     /**
-     * @param BlogMapperInterface $blogMapper
+     * @param PostMapperInterface $blogMapper
      */
-    public function __construct(BlogMapperInterface $blogMapper)
+    public function __construct(PostMapperInterface $blogMapper)
     {
         $this->blogMapper = $blogMapper;
     }
@@ -23,7 +23,7 @@ class BlogService implements BlogServiceInterface
     /**
      * @inheritDoc
      */
-    public function findAllBlogs()
+    public function findAllPosts()
     {
         return $this->blogMapper->findAll();
     }
@@ -31,7 +31,7 @@ class BlogService implements BlogServiceInterface
     /**
      * @inheritDoc
      */
-    public function findBlog($id)
+    public function findPost($id)
     {
         return $this->blogMapper->find($id);
     }
@@ -39,7 +39,7 @@ class BlogService implements BlogServiceInterface
     /**
      * @inheritDoc
      */
-    public function saveBlog(BlogInterface $blog)
+    public function savePost(PostInterface $blog)
     {
         return $this->blogMapper->save($blog);
     }
@@ -47,7 +47,7 @@ class BlogService implements BlogServiceInterface
     /**
      * @inheritDoc
      */
-    public function deleteBlog(BlogInterface $blog)
+    public function deletePost(PostInterface $blog)
     {
         return $this->blogMapper->delete($blog);
     }
